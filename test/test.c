@@ -107,10 +107,20 @@ int main()
 
     lua_getglobal(L1, "Func1");
     lua_getglobal(L1, "test");
+    lua_pushnil(L1);
+    stackDump(L1);
+    while(lua_next(L1, -2)) {
+        //lua_pushvalue(L1, -2);
+        const char *key = lua_tostring(L1, -1);
+        const char *value = lua_tostring(L1, -2);
+        printf("%s=>%s\n", key, value);
+        lua_pop(L1, 1);
+    }
+
     lua_pushstring(L1, "for test");
     //lua_setfield(L1, -2, "a");
     lua_pushstring(L1, "a");
-    lua_gettable(L1, -3);
+    //lua_gettable(L1, -3);
     //lua_getfield(L1, -1, "a");
     lua_pushinteger(L1, 10);
 
