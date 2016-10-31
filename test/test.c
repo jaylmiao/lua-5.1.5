@@ -78,9 +78,15 @@ int main()
         return -1;
     }
 
-    int stack_size = lua_checkstack(L, 10);
-    printf("stack_size check:%d\n", stack_size);
+    /*lua_checkstack*/
+    int stack_check;
+    stack_check = lua_checkstack(L, 10); //success
+    printf("stack_size 10 check result:%d\n", stack_check);
+    stack_check = lua_checkstack(L, 10000); //failed, max stack_size is 8000
+    printf("stack_size 10000 check result:%d\n", stack_check);
+    printf("\n");
 
+    /*lua_pushstring*/
     lua_pushstring(L, "hello");
     lua_pushstring(L, "jaymiao");
     lua_concat(L, 2);
@@ -116,16 +122,48 @@ int main()
         printf("%s=>%s\n", key, value);
         lua_pop(L1, 1);
     }
+    stackDump(L1);
 
     lua_pushstring(L1, "for test");
     //lua_setfield(L1, -2, "a");
     lua_pushstring(L1, "a");
     //lua_gettable(L1, -3);
-    //lua_getfield(L1, -1, "a");
+    //lua_rawget(L1, -3);
+    lua_rawgeti(L1, -3, 1);
+    printf("%d\n", lua_getmetatable(L1, -3));
+    //lua_getfield(L1, -3, "a");
     lua_pushinteger(L1, 10);
 
     stackDump(L);
     stackDump(L1);
+
+    lua_xmove(L, L1, 2);
+    stackDump(L);
+    stackDump(L1);
+
+    lua_settop(L1, 10);
+    stackDump(L1);
+
+    lua_remove(L1, 3);
+    stackDump(L1);
+    lua_remove(L1, -3);
+    stackDump(L1);
+
+    lua_insert(L1, 3);
+    stackDump(L1);
+    lua_insert(L1, -3);
+    stackDump(L1);
+
+    lua_replace(L1, 3);
+    stackDump(L1);
+    lua_replace(L1, -1);
+    stackDump(L1);
+
+    lua_pushvalue(L1, 3);
+    stackDump(L1);
+    lua_pushstring(L1, "123");
+    stackDump(L1);
+    printf("%d\n", lua_rawequal(L1, -4, -1));
 
     int bRet = lua_resume(L1, 1);
     printf("resume: %d\n", bRet);
