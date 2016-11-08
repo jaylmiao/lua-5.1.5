@@ -87,12 +87,25 @@ int main()
     printf("\n");
 
     /*lua_pushstring*/
+    lua_createtable(L, 1, 2);
+    lua_pushstring(L, "");
+    lua_pushvalue(L, -2);
+    lua_setmetatable(L, -2);
+    lua_pop(L, 1);
+    lua_pushvalue(L, -2);
+    lua_setfield(L, -2, "__index");
+    stackDump(L);
+
     lua_pushstring(L, "hello");
     lua_pushstring(L, "jaymiao");
     lua_concat(L, 2);
+    size_t len;
+    printf("%s\n", lua_tolstring(L, -1, &len));
+    printf("%d\n", len);
     lua_createtable(L, 1, 2);
     stackDump(L);
     lua_atpanic(L, my_panic);
+    return 1;
     //lua_error(L);
 
     lua_State *L1 = lua_newthread(L);
@@ -125,7 +138,13 @@ int main()
     stackDump(L1);
 
     lua_pushstring(L1, "for test");
-    //lua_setfield(L1, -2, "a");
+    stackDump(L1);
+    lua_setfield(L1, -2, "xx");
+    stackDump(L1);
+    lua_getfield(L1, -1, "xx");
+    lua_pushvalue(L1, -2);
+    stackDump(L1);
+    return 1;
     lua_pushstring(L1, "a");
     //lua_gettable(L1, -3);
     //lua_rawget(L1, -3);
