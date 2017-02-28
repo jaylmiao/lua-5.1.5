@@ -1,3 +1,9 @@
+command:
+
+gdb ./src/lua
+set args ./test/hello.lua
+b main
+
 (gdb) bt
 #0  pmain (L=0x635010) at lua.c:341
 #1  0x000000000040a17d in luaD_precall (L=0x635010, func=0x6353e0, nresults=0) at ldo.c:320
