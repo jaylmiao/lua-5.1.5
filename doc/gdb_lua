@@ -1,0 +1,9 @@
+(gdb) bt
+#0  pmain (L=0x635010) at lua.c:341
+#1  0x000000000040a17d in luaD_precall (L=0x635010, func=0x6353e0, nresults=0) at ldo.c:320
+#2  0x000000000040a413 in luaD_call (L=0x635010, func=0x6353e0, nResults=0) at ldo.c:377
+#3  0x0000000000406c3c in f_Ccall (L=0x635010, ud=0x7fffffffe400) at lapi.c:846
+#4  0x000000000040938c in luaD_rawrunprotected (L=0x635010, f=0x406b61 <f_Ccall>, ud=0x7fffffffe400) at ldo.c:116
+#5  0x000000000040a82c in luaD_pcall (L=0x635010, func=0x406b61 <f_Ccall>, u=0x7fffffffe400, old_top=16, ef=0) at ldo.c:464
+#6  0x0000000000406c96 in lua_cpcall (L=0x635010, func=0x404921 <pmain>, ud=0x7fffffffe440) at lapi.c:856
+#7  0x0000000000404b7c in main (argc=2, argv=0x7fffffffe558) at lua.c:387
